@@ -1,9 +1,12 @@
 import express from 'express';
 import {connect} from './config/database.js';
+import apiRoutes from './routes/index.js';
 const app = express();
-import HashtagRepository from './repository/hashtag-repository.js';
+
+app.use('api',apiRoutes);
 
 import service from  './services/tweet-service.js'
+
 
 app.listen(3000,async()=>{
   console.log("Server Started on Port");
