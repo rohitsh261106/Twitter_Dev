@@ -1,18 +1,28 @@
 import express from 'express';
 import {connect} from './config/database.js';
 import apiRoutes from './routes/index.js';
+
+import {UserRepository,TweetRepository} from './repository/index.js'
+import LikeService from './services/like-service.js'
+
+
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('api',apiRoutes);
-
-import service from  './services/tweet-service.js'
-
+app.use('/api',apiRoutes)
 
 app.listen(3000,async()=>{
   console.log("Server Started on Port");
   await connect();
   console.log("mongodb connected")
-  let ser = new service();
-  await ser.create({content: 'Done with #refactor'});
+
+  const userRepo = new UserRepository();
+  const tweetRepo = new TweetRepository();
+  const tweets = await tweetRepo.getAll(0,10);
+  const users = await userRepo.getAll();
+  const likeservice = new LikeService();
+  await likeservice.toggleLike(tweets[0].id,'Tweet',users[0].id);
+  
   
 })
