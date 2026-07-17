@@ -9,10 +9,10 @@ class CrudRepository {
             console.log(data);
             const result = await this.model.create(data);
             return result;
-        } catch (error) {
-            console.log("Something went wrong in crud repo");
-            throw error;
-        }
+        }catch (error) {
+    console.error("CRUD Error:", error);
+    throw error;
+}
     }
 
     async destroy(id) {
